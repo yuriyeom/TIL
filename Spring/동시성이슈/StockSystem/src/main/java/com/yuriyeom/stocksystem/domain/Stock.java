@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Stock {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long productId;
     private Long quantity;
@@ -15,8 +15,7 @@ public class Stock {
     public Stock() {
     }
 
-    public Stock(Long id, Long productId, Long quantity) {
-        this.id = id;
+    public Stock(Long productId, Long quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }
