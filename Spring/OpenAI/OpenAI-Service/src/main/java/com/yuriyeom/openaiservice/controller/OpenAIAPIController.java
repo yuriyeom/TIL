@@ -2,6 +2,8 @@ package com.yuriyeom.openaiservice.controller;
 
 import com.yuriyeom.openaiservice.domain.ChatCompletionRequest;
 import com.yuriyeom.openaiservice.domain.ChatCompletionResponse;
+import com.yuriyeom.openaiservice.service.OpenAIAPIService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,13 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
+@RequiredArgsConstructor
 public class OpenAIAPIController {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+    private final OpenAIAPIService openAIAPIService;
 
-    @PostMapping("/hitOpenAIAPI")
-    public String getOpenAIResponse(@RequestBody String prompt){
+    @PostMapping("/chat/rt")
+    public String getOpenAIResponseWithRT(@RequestBody String prompt){
         ChatCompletionRequest chatCompletionRequest
                 = new ChatCompletionRequest("gpt-3.5-turbo", prompt);
 
@@ -24,5 +27,10 @@ public class OpenAIAPIController {
                         chatCompletionRequest, ChatCompletionResponse.class );
 
         return response.getChoices().get(0).getMessage().getContent();
+    }
+
+    @PostMapping("/chat")
+    public String getOpenAIResponse(@RequestBody String prompt){
+        return openAIAPIService.getOpenAIResponse(prompt);
     }
 }
