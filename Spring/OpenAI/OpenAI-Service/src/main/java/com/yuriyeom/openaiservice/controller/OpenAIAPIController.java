@@ -2,12 +2,11 @@ package com.yuriyeom.openaiservice.controller;
 
 import com.yuriyeom.openaiservice.domain.ChatCompletionRequest;
 import com.yuriyeom.openaiservice.domain.ChatCompletionResponse;
+import com.yuriyeom.openaiservice.service.AzureService;
 import com.yuriyeom.openaiservice.service.OpenAIAPIService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
@@ -16,6 +15,7 @@ public class OpenAIAPIController {
 
     private final RestTemplate restTemplate;
     private final OpenAIAPIService openAIAPIService;
+    private final AzureService azureService;
 
     @PostMapping("/chat/rt")
     public String getOpenAIResponseWithRT(@RequestBody String prompt){
@@ -32,5 +32,15 @@ public class OpenAIAPIController {
     @PostMapping("/chat")
     public String getOpenAIResponse(@RequestBody String prompt){
         return openAIAPIService.getOpenAIResponse(prompt);
+    }
+
+    @GetMapping("/meaning")
+    public String searchWordMeaning(@RequestParam String word){
+        return openAIAPIService.searchWordMeaning(word);
+    }
+
+    @GetMapping("/azure")
+    public void getChatInAzure(){
+        azureService.getChat();
     }
 }

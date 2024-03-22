@@ -16,7 +16,7 @@ public class OpenAIAPIService {
     @Value("${openai.model}")
     private String model;
 
-    public OpenAIAPIService(WebClient.Builder webClientBuilder, ObjectMapper objectMapper,
+    public OpenAIAPIService(WebClient.Builder webClientBuilder,
                             @Value("${openai.key}") String OPENAIAPIKEY) {
         this.webClient = webClientBuilder
                 .baseUrl("https://api.openai.com/v1/chat/completions")
@@ -26,6 +26,23 @@ public class OpenAIAPIService {
     }
 
     public String getOpenAIResponse(String prompt){
+        ChatCompletionRequest chatCompletionRequest
+                = new ChatCompletionRequest(model, prompt);
+
+        ChatCompletionResponse response = webClient.post()
+                .uri("")
+                .bodyValue(chatCompletionRequest)
+                .retrieve()
+                .bodyToMono(ChatCompletionResponse.class)
+                .block();
+
+        return response.getChoices().get(0).getMessage().getContent();
+    }
+
+    public String searchWordMeaning(String word) {
+
+        String prompt = "{\"role\": \"user\", \"content\": \"" + word + "에 대한 설명을 100자 이내로 답변해줘. \"}";
+
         ChatCompletionRequest chatCompletionRequest
                 = new ChatCompletionRequest(model, prompt);
 
