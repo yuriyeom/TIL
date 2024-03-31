@@ -82,6 +82,9 @@
     2. postHandle() : 컨트롤러 호출 후에 실행된다.
     3. afterCompletion() : 모든 작업이 완료 된 후 view가 렌더링된 후에 실행된다.
 
+<br>
+<br>
+
 ### Filter VS Interceptor
 ![image](https://github.com/yuriyeom/TIL/assets/43941336/6a726871-be8e-41d4-9ffa-5c2d7f9f2e5d)
 
