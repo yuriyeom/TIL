@@ -256,6 +256,61 @@ public class SecurityConfig {
 }
 
 ```
+<br>
+
+- CORS
+    - 한 출처에서 실행중인 웹 애플리케이션이 다른 출처의 리소스에 접근할 수 있는 권한을 부여하는 정책
+    - 출처
+        - 프로토콜(http), 호스트(naver.com), 포트번호(80)
+    - 필요한 이유
+        - 출처가 다른 어플리케이션이 소통을 하게 되면 한 사이트를 모방하여 사용자의 정보를 탈취할 수 있다.
+    - CORS 설정은 API 서버에서 HTTP 응답 헤더에 "Access-Control-Allow-Origin" 항목을 추가하여 허용할 도메인을 지정하는 것으로 가능합니다.
+        - Access-Control-Allow-Origin: [https://example.com](https://example.com/)
+- CSRF
+    - 정상적인 사용자가 의도치 않은 위조 요청을 보내는 것
+    - 쿠키 기반 서버의 세션 정보를 획득할 수 있을 때
+    - REST API는 stateless해서 서버에 인증정보 보관하지 않음
+        - 세션을 이용하지 않고 JWT 이용하므로 불필요
+- HTTP METHOD
+    - GET : 리소스 조회
+    - POST : 요청 데이터 처리. 주로 등록에 사용
+    - PUT : 리소스 대체. 없으면 생성
+    - PATCH : 리소스 부분 수정
+    - DELETE : 리소스 삭제
+    
+    - GET VS POST
+        - GET
+            - 쿼리스트링 노출
+            - 멱등성 O → 여러번 조회시 같은 결과값 보장 O
+            - 캐싱해서 조회 속도 우수
+        - POST
+            - 메세지 BODY에 데이터. 길이 제한 없음
+            - 멱등성 X → 여러번 조회시 같은 결과값 보장 X
+    - 멱등성 : 여러번 조회했을때 같은 결과값
+        - GET, PUT, DELETE 보장
+        - POST, PATCH 보장X
+
+- Exception
+    - authenticationEntryPoint
+        - 인증 실패
+        - 인증 처리 과정에서 예외가 발생한 경우 예외를 핸들링하는 인터페이스
+        - 인증 예외가 생겼을 때 어떻게 할 것인가
+        - 유효한 자격증명을 제공하지 않고 접근하려 할 때, 401
+    - accessDeniedHandler
+        - 인가 실패
+        - 필요한 권한없이 접근하려 할 때, 403
+        
+- OAuth2
+	- successHandler
+	    authentication 객체에서 OAuth2User를 꺼낸다.	    
+	    accessToken, refreshToken 발급	    
+	    사용자 저장 또는 업데이트	    
+	    role에 따라 처음 사용자는 추가 가입정보 입력페이지로 기존 사용자는 홈화면으로    
+	- userService
+	    1. access token을 이용해 서드파티 서버로부터 사용자 정보를 받아온다.
+	    2. 해당 사용자가 이미 회원가입 되어있는 사용자인지 확인한다.만약 회원가입이 되어있지 않다면, 회원가입 처리한다.
+	    3. 세션 방식에서는 여기서 return한 객체가 시큐리티 세션에 저장된다.
+	        하지만 JWT 방식에서는 저장하지 않는다.
 
 <br>
 
